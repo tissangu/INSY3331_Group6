@@ -1,0 +1,2713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TripSplit AI - Plan Together. Spend Smarter. Travel Better.</title>
+  <meta name="description" content="Personalized group travel itinerary generator and budget splitter for young adults and groups of friends.">
+  <style>
+    /* ==========================================================================
+       TRIPSPLIT AI - DESIGN SYSTEM & STYLES (Single-File CSS)
+       ========================================================================== */
+    :root {
+      --primary: #0d9488;
+      --primary-hover: #0f766e;
+      --primary-light: #ccfbf1;
+      --primary-50: #f0fdfa;
+      --accent: #f43f5e;
+      --accent-hover: #e11d48;
+      --accent-light: #ffe4e6;
+      --secondary: #6366f1;
+      --secondary-light: #e0e7ff;
+      --bg-page: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --border: #e2e8f0;
+      --border-focus: #0d9488;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Accessibility focus rings */
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Header & Navigation */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.35rem;
+      box-shadow: 0 4px 10px rgba(13, 148, 136, 0.3);
+      flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      background: var(--primary-light);
+      color: var(--primary-hover);
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.55rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-sm {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.775rem;
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: var(--radius-lg);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+    }
+
+    .btn-secondary {
+      background-color: var(--surface);
+      color: var(--text-main);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background-color: var(--surface-subtle);
+      border-color: #cbd5e1;
+    }
+
+    .btn-accent {
+      background-color: var(--accent);
+      color: white;
+    }
+    .btn-accent:hover {
+      background-color: var(--accent-hover);
+      box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--text-muted);
+    }
+    .btn-ghost:hover {
+      color: var(--text-main);
+      background-color: var(--surface-subtle);
+    }
+
+    /* Stepper Header */
+    .stepper-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 0;
+    }
+
+    .steps-list {
+      display: flex;
+      justify-content: space-between;
+      list-style: none;
+      position: relative;
+      gap: 0.5rem;
+    }
+
+    .step-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      text-align: center;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+    }
+
+    .step-item:hover {
+      background: var(--surface-subtle);
+    }
+
+    .step-indicator {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      transition: var(--transition);
+    }
+
+    .step-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .step-item.active .step-indicator {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .step-item.active .step-label {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .step-item.completed .step-indicator {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .step-item.completed .step-label {
+      color: var(--text-main);
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #042f2e 0%, #115e59 50%, #0d9488 100%);
+      color: white;
+      padding: 2.25rem 0;
+      margin-bottom: 2rem;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .hero-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-text h2 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-text p {
+      font-size: 0.95rem;
+      opacity: 0.92;
+      max-width: 600px;
+    }
+
+    .hero-pills {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(4px);
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main App Layout */
+    main {
+      flex: 1;
+      padding-bottom: 4rem;
+    }
+
+    .step-section {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .step-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* Forms */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-label {
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: normal;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      background: var(--surface);
+      color: var(--text-main);
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* Alert / Callout Boxes */
+    .alert {
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      font-size: 0.875rem;
+      border: 1px solid transparent;
+    }
+
+    .alert-info {
+      background: var(--primary-50);
+      border-color: var(--primary-light);
+      color: #0f766e;
+    }
+
+    .alert-warning {
+      background: var(--warning-light);
+      border-color: #fde68a;
+      color: #92400e;
+    }
+
+    .alert-danger {
+      background: var(--danger-light);
+      border-color: #fecaca;
+      color: #991b1b;
+    }
+
+    .alert-success {
+      background: var(--success-light);
+      border-color: #a7f3d0;
+      color: #065f46;
+    }
+
+    /* Travelers Grid */
+    .travelers-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .traveler-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .traveler-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: var(--shadow-md);
+    }
+
+    .traveler-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .traveler-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--secondary-light);
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .traveler-name-input {
+      font-weight: 700;
+      font-size: 1.05rem;
+      border: 1px solid transparent;
+      padding: 0.2rem 0.4rem;
+      border-radius: var(--radius-sm);
+      flex: 1;
+    }
+
+    .traveler-name-input:hover, .traveler-name-input:focus {
+      border-color: var(--border);
+      background: var(--surface-subtle);
+    }
+
+    .tag-selector-title {
+      font-size: 0.775rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .tag-checkbox {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 0.65rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition);
+    }
+
+    .tag-checkbox:checked + .tag-chip {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary-hover);
+    }
+
+    .tag-chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Comparison / Consensus View */
+    .consensus-panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .consensus-stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .stat-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .interest-bar-item {
+      margin-bottom: 0.75rem;
+    }
+
+    .interest-bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .bar-track {
+      height: 8px;
+      border-radius: 9999px;
+      background: var(--surface-subtle);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.4s ease;
+    }
+
+    /* Itinerary Timeline */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .day-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .day-header {
+      background: linear-gradient(to right, var(--surface-subtle), var(--surface));
+      padding: 0.9rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .day-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .day-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      background: var(--primary-light);
+      color: var(--primary-hover);
+    }
+
+    .day-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 1.25rem;
+    }
+
+    .slot-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .slot-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .slot-time {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .slot-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+    }
+
+    .slot-description {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .slot-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      font-size: 0.75rem;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.2rem 0.45rem;
+      border-radius: var(--radius-sm);
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .meta-price {
+      background: var(--success-light);
+      color: #065f46;
+      font-weight: 700;
+    }
+
+    .meta-reason {
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #dbeafe;
+    }
+
+    /* Budget Breakdown & Health Cards */
+    .budget-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .person-budget-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .person-budget-card.deficit {
+      border-color: #fca5a5;
+      background: #fffcfc;
+    }
+
+    .person-budget-card.surplus {
+      border-color: #86efac;
+    }
+
+    .person-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .person-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .balance-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+    }
+
+    .balance-badge.ok {
+      background: var(--success-light);
+      color: #065f46;
+    }
+
+    .balance-badge.alert {
+      background: var(--danger-light);
+      color: #991b1b;
+    }
+
+    .cost-breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .cost-breakdown-table td {
+      padding: 0.35rem 0;
+      color: var(--text-muted);
+    }
+
+    .cost-breakdown-table td:last-child {
+      text-align: right;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .cost-breakdown-table tr.total-row td {
+      border-top: 1px dashed var(--border);
+      padding-top: 0.6rem;
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 0.9rem;
+    }
+
+    /* Progress bar */
+    .budget-meter-track {
+      height: 10px;
+      background: var(--surface-subtle);
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .budget-meter-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.4s ease;
+    }
+
+    .meter-ok {
+      background: linear-gradient(90deg, #10b981, #0d9488);
+    }
+
+    .meter-danger {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+    }
+
+    /* Explanation & Responsible AI Box */
+    .info-disclosure {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .info-disclosure h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .disclosure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .disclosure-item h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+    }
+
+    /* Wizard Navigation Footer */
+    .wizard-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Modal / Dialog */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      max-width: 520px;
+      width: 100%;
+      padding: 1.75rem;
+      box-shadow: var(--shadow-lg);
+      animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    /* Notification Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      background: #1e293b;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: toastIn 0.25s ease-out;
+    }
+
+    @keyframes toastIn {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Print View Styles */
+    @media print {
+      header, .stepper-nav, .wizard-footer, .header-actions, .btn, .no-print {
+        display: none !important;
+      }
+      body {
+        background: white;
+        color: black;
+      }
+      .card, .day-card, .person-budget-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        break-inside: avoid;
+      }
+      .step-section {
+        display: block !important;
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .steps-list {
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+      }
+      .step-item {
+        min-width: 70px;
+      }
+      .step-label {
+        font-size: 0.7rem;
+      }
+      .hero-banner {
+        padding: 1.5rem 0;
+      }
+      .hero-text h2 {
+        font-size: 1.4rem;
+      }
+      .travelers-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       HEADER & BRANDING
+       ========================================================================== -->
+  <header>
+    <div class="container header-content">
+      <a href="#" class="brand" onclick="goToStep(1); return false;" title="Return to Step 1">
+        <div class="brand-icon">✈️</div>
+        <div class="brand-text">
+          <h1>TripSplit AI <span class="brand-badge">Smart Group Planner</span></h1>
+          <p>Plan Together. Spend Smarter. Travel Better.</p>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openDemoModal()" title="Load sample trip data">
+          <span>✨</span> Load Demo Group
+        </button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="confirmResetTrip()" title="Clear and restart">
+          <span>🔄</span> Reset
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="window.print()" title="Print or save as PDF">
+          <span>🖨️</span> Print / PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       STEPPER PROGRESS BAR
+       ========================================================================== -->
+  <nav class="stepper-nav" aria-label="Trip planning steps">
+    <div class="container">
+      <ol class="steps-list" id="stepsIndicator">
+        <li class="step-item active" onclick="goToStep(1)">
+          <div class="step-indicator">1</div>
+          <span class="step-label">1. Trip Setup</span>
+        </li>
+        <li class="step-item" onclick="goToStep(2)">
+          <div class="step-indicator">2</div>
+          <span class="step-label">2. Travelers</span>
+        </li>
+        <li class="step-item" onclick="goToStep(3)">
+          <div class="step-indicator">3</div>
+          <span class="step-label">3. Itinerary</span>
+        </li>
+        <li class="step-item" onclick="goToStep(4)">
+          <div class="step-indicator">4</div>
+          <span class="step-label">4. Budget Split</span>
+        </li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- ==========================================================================
+       MAIN CONTENT CONTAINER
+       ========================================================================== -->
+  <main class="container" style="margin-top: 1.5rem;">
+
+    <!-- TOP HERO BANNER -->
+    <section class="hero-banner">
+      <div class="container hero-content">
+        <div class="hero-text">
+          <h2>Fair Group Travel Planning Made Easy</h2>
+          <p>Balances everyone's budget, surfaces shared interests, and anchors shared costs to the lowest budget so no friend is left behind.</p>
+          <div class="hero-pills">
+            <span class="pill-badge">🔒 100% Client-Side Privacy</span>
+            <span class="pill-badge">⚖️ Lowest-Budget Fair-Share Engine</span>
+            <span class="pill-badge">💾 Auto-Saved in Browser</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FRIENDLY ERROR BANNER (DYNAMIC) -->
+    <div id="globalErrorBanner" class="alert alert-danger" style="display: none;" role="alert">
+      <span style="font-size: 1.25rem;">⚠️</span>
+      <div id="globalErrorMessage">Please review the highlighted fields below.</div>
+    </div>
+
+    <!-- ==========================================================================
+         STEP 1: TRIP SETUP
+         ========================================================================== -->
+    <section id="step1" class="step-section active">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title"><span>📍</span> Step 1: Where & When Are You Going?</h2>
+            <p class="card-subtitle">Choose your destination and baseline parameters to configure group pricing estimates.</p>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="openDemoModal()">
+            ⚡ Pre-fill Sample Trip
+          </button>
+        </div>
+
+        <div class="form-grid">
+          <!-- Destination -->
+          <div class="form-group">
+            <label class="form-label" for="destinationInput">
+              Destination City
+              <span class="form-hint">Select popular or enter custom</span>
+            </label>
+            <select id="destinationInput" class="form-control" onchange="handleDestinationChange(this.value)">
+              <option value="Barcelona, Spain">Barcelona, Spain (Beach, Tapas, Gaudi)</option>
+              <option value="Tokyo, Japan">Tokyo, Japan (Food, Culture, Shrines)</option>
+              <option value="Mexico City, Mexico">Mexico City, Mexico (Tacos, Art, History)</option>
+              <option value="New York City, USA">New York City, USA (Skyline, Shows, Parks)</option>
+              <option value="Bali, Indonesia">Bali, Indonesia (Waterfalls, Temples, Beaches)</option>
+              <option value="custom">-- Custom Destination --</option>
+            </select>
+            <input type="text" id="customDestinationInput" class="form-control" style="display: none; margin-top: 0.5rem;" placeholder="Enter custom destination (e.g. Lisbon, Portugal)">
+          </div>
+
+          <!-- Trip Duration -->
+          <div class="form-group">
+            <label class="form-label" for="durationInput">
+              Trip Duration
+              <span class="form-hint">1 to 10 days</span>
+            </label>
+            <select id="durationInput" class="form-control">
+              <option value="2">2 Days (Weekend Getaway)</option>
+              <option value="3" selected>3 Days (Long Weekend)</option>
+              <option value="4">4 Days</option>
+              <option value="5">5 Days (Popular)</option>
+              <option value="7">7 Days (Full Week)</option>
+              <option value="10">10 Days</option>
+            </select>
+          </div>
+
+          <!-- Number of Travelers -->
+          <div class="form-group">
+            <label class="form-label" for="travelerCountInput">
+              Group Size
+              <span class="form-hint">2 to 8 friends</span>
+            </label>
+            <select id="travelerCountInput" class="form-control" onchange="syncTravelerCount(this.value)">
+              <option value="2">2 Travelers (Duo)</option>
+              <option value="3">3 Travelers</option>
+              <option value="4" selected>4 Travelers (Squad)</option>
+              <option value="5">5 Travelers</option>
+              <option value="6">6 Travelers</option>
+            </select>
+          </div>
+
+          <!-- Accommodation Style -->
+          <div class="form-group">
+            <label class="form-label" for="lodgingTierInput">
+              Lodging Style (Split Equally)
+              <span class="form-hint">Baseline nightly split</span>
+            </label>
+            <select id="lodgingTierInput" class="form-control">
+              <option value="hostel">Shared Hostel Dorm (~$28 / person / night)</option>
+              <option value="budget_hotel" selected>Shared Airbnb / Budget Hotel (~$50 / person / night)</option>
+              <option value="hotel">Comfort Hotel / Boutique Apt (~$85 / person / night)</option>
+            </select>
+          </div>
+
+          <!-- Food Style -->
+          <div class="form-group">
+            <label class="form-label" for="foodTierInput">
+              Dining Style
+              <span class="form-hint">Daily meal allowance</span>
+            </label>
+            <select id="foodTierInput" class="form-control">
+              <option value="budget">Budget (Street food, bakeries, markets ~$22/day)</option>
+              <option value="balanced" selected>Balanced (Casual sit-down & cafes ~$38/day)</option>
+              <option value="splurge">Foodie (Full sit-down dining & drinks ~$65/day)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 1.5rem; margin-bottom: 0;">
+          <span>💡</span>
+          <div>
+            <strong>Pricing Note:</strong> All costs are realistic baseline planning estimates. Exact flight prices and taxes vary, so TripSplit AI focuses on on-the-ground accommodations, local transit, food, and activities.
+          </div>
+        </div>
+      </div>
+
+      <div class="wizard-footer">
+        <div></div>
+        <button type="button" class="btn btn-primary btn-lg" onclick="goToStep(2)">
+          Next: Add Travelers & Budgets <span>→</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STEP 2: ADD TRAVELERS & PREFERENCES
+         ========================================================================== -->
+    <section id="step2" class="step-section">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title"><span>👥</span> Step 2: Traveler Profiles & Activity Interests</h2>
+            <p class="card-subtitle">Enter each person's total trip budget and check off the activities they genuinely enjoy.</p>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="addNewTraveler()">
+            <span>➕</span> Add Another Traveler
+          </button>
+        </div>
+
+        <!-- Dynamic Travelers Cards -->
+        <div class="travelers-list" id="travelersContainer">
+          <!-- Rendered by JavaScript -->
+        </div>
+
+        <div class="alert alert-warning" id="budgetDiscrepancyNotice" style="display: none;">
+          <span>⚠️</span>
+          <div>
+            <strong>Budget Gap Alert:</strong> The lowest budget is significantly below the highest budget. TripSplit AI will use the lowest budget as the hard constraint for group activities so everyone can comfortably participate.
+          </div>
+        </div>
+      </div>
+
+      <div class="wizard-footer">
+        <button type="button" class="btn btn-secondary" onclick="goToStep(1)">
+          <span>←</span> Back to Setup
+        </button>
+        <button type="button" class="btn btn-primary btn-lg" onclick="validateAndGenerateItinerary()">
+          Generate Smart Itinerary <span>✨</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STEP 3: GROUP CONSENSUS & SMART ITINERARY GENERATOR
+         ========================================================================== -->
+    <section id="step3" class="step-section">
+      
+      <!-- Group Consensus & Equity Analytics Card -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title"><span>⚖️</span> Group Alignment & Preference Consensus</h2>
+            <p class="card-subtitle">How our Fair-Share algorithm balances your squad's individual budgets and tags.</p>
+          </div>
+          <span class="badge" id="consensusPill">Analyzing Group Alignment</span>
+        </div>
+
+        <div class="consensus-panel" id="consensusSummary">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div id="interestDistribution">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Generated Day-by-Day Timeline -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title"><span>📅</span> Personalized Itinerary Timeline</h2>
+            <p class="card-subtitle" id="itinerarySubtitle">Generated based on your group's collective interests and budget constraints.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="regenerateItinerary()" title="Shuffle and re-score activities">
+              <span>🎲</span> Shuffle / Regenerate
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="goToStep(4)">
+              Review Budget Split <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Warning / Infeasible Notice if budget is too strict -->
+        <div id="itineraryNotice" style="display: none;"></div>
+
+        <!-- Timeline Container -->
+        <div class="timeline" id="itineraryContainer">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <div class="wizard-footer">
+        <button type="button" class="btn btn-secondary" onclick="goToStep(2)">
+          <span>←</span> Edit Travelers & Preferences
+        </button>
+        <button type="button" class="btn btn-primary btn-lg" onclick="goToStep(4)">
+          Next: Review Budget Breakdown <span>💰</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STEP 4: BUDGET CALCULATOR & EXPENSE SPLIT
+         ========================================================================== -->
+    <section id="step4" class="step-section">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title"><span>💳</span> Step 4: Group Cost Split & Individual Budget Ledger</h2>
+            <p class="card-subtitle">Transparent breakdown of shared lodging, daily meals, local transit, and scheduled itinerary activities.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="goToStep(2)">
+              <span>✏️</span> Adjust Budgets
+            </button>
+            <button type="button" class="btn btn-accent btn-sm" onclick="window.print()">
+              <span>🖨️</span> Print / Save Itinerary
+            </button>
+          </div>
+        </div>
+
+        <!-- Group Totals Summary Banner -->
+        <div class="consensus-panel" id="groupBudgetSummary">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Individual Traveler Balance Cards -->
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-main);">
+          Individual Financial Health & Feasibility
+        </h3>
+        <div class="budget-grid" id="individualBudgetContainer">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Responsible AI & Algorithm Disclosure Box -->
+      <div class="info-disclosure">
+        <h3><span>🧠</span> How TripSplit AI Makes Decisions</h3>
+        <div class="disclosure-grid">
+          <div class="disclosure-item">
+            <h4>1. Lowest-Budget Anchoring</h4>
+            <p>Group activities and shared expenses are calculated against the friend with the lowest stated budget, preventing uncomfortable social friction or exclusion.</p>
+          </div>
+          <div class="disclosure-item">
+            <h4>2. Democratic Consensus Voting</h4>
+            <p>Every activity is scored based on the percentage of travelers who selected its category. High-consensus activities are scheduled first.</p>
+          </div>
+          <div class="disclosure-item">
+            <h4>3. Minority Preference Guarantee</h4>
+            <p>To avoid majority tyranny, the engine tracks fulfilled interests per person and reserves slots for minority tags (e.g. vintage shopping or quiet scenic views).</p>
+          </div>
+          <div class="disclosure-item">
+            <h4>4. 100% Privacy & Local Storage</h4>
+            <p>No financial data, logins, or tracking cookies are sent over the internet. Everything is computed in your browser and saved to your device's <code>localStorage</code>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="wizard-footer">
+        <button type="button" class="btn btn-secondary" onclick="goToStep(3)">
+          <span>←</span> Back to Itinerary
+        </button>
+        <button type="button" class="btn btn-primary" onclick="goToStep(1)">
+          <span>✨</span> Modify Trip Parameters
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       MODAL: PRE-POPULATED DEMO GROUPS (For fast grading/testing)
+       ========================================================================== -->
+  <div id="demoModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">✨ Load a Sample Trip</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeDemoModal()">✕</button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        Select a pre-configured scenario designed to test budget constraints and differing interests.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div class="card" style="padding: 1rem; cursor: pointer; border-color: var(--primary);" onclick="loadPreset('barcelona')">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <strong style="color: var(--primary-hover);">🇪🇸 Barcelona Squad (4 Friends, Varied Budgets)</strong>
+            <span class="meta-pill meta-price">Recommended</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">
+            4 travelers: Alex ($750, budget constraint), Jordan ($1,200), Sam ($1,000), Maya ($900). Mixed preferences: Food, Beaches, Gaudi Sightseeing, Nightlife.
+          </p>
+        </div>
+
+        <div class="card" style="padding: 1rem; cursor: pointer;" onclick="loadPreset('tokyo')">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <strong>🇯🇵 Tokyo Culture & Food Crew (3 Friends)</strong>
+            <span class="meta-pill">5 Days</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">
+            3 travelers: Ken ($1,400), Elena ($950, constraint), Ren ($1,100). Focus on Temples, Street Markets, Thrift Shopping, Ramen.
+          </p>
+        </div>
+
+        <div class="card" style="padding: 1rem; cursor: pointer;" onclick="loadPreset('mexico')">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <strong>🇲🇽 Mexico City Affordable Getaway (4 Friends)</strong>
+            <span class="meta-pill">3 Days</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">
+            4 travelers with tight budgets ($450–$650) testing low-cost taco crawls, historic zocalo, and affordable museums.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.25rem; text-align: right;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeDemoModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ==========================================================================
+       EMBEDDED APPLICATION LOGIC & DATASET (Vanilla JavaScript)
+       ========================================================================== -->
+  <script>
+    /**
+     * TRIPSPLIT AI - Single-file Client Application
+     * Course Project - Group Vacation Planner & Budget Splitter
+     */
+
+    // --- ACTIVITY CATALOG DATABASE ---
+    const ACTIVITY_CATALOG = {
+      "Barcelona, Spain": [
+        {
+          id: "bcn_1",
+          name: "Park Güell & Gaudi Scenic Panorama",
+          category: "sightseeing",
+          cost: 13,
+          duration: "2.5h",
+          slot: "morning",
+          description: "Explore Antoni Gaudi's vibrant mosaic pavilions, dragon stairway, and sweeping city views over Barcelona."
+        },
+        {
+          id: "bcn_2",
+          name: "La Boqueria & Gothic Quarter Tapas Crawl",
+          category: "food",
+          cost: 22,
+          duration: "2h",
+          slot: "afternoon",
+          description: "Sample jamón ibérico, croquetas, patatas bravas, and fresh fruit juices inside the famed historic food hall."
+        },
+        {
+          id: "bcn_3",
+          name: "Barceloneta Beach Lounging & Volleyball",
+          category: "beaches",
+          cost: 0,
+          duration: "3h",
+          slot: "afternoon",
+          description: "Relax by the Mediterranean sea, swim, or start a pickup volleyball game along the golden sand promenade."
+        },
+        {
+          id: "bcn_4",
+          name: "Bunkers del Carmel Sunset Views",
+          category: "outdoor",
+          cost: 0,
+          duration: "2h",
+          slot: "evening",
+          description: "Pack picnic snacks and watch the 360-degree sunset over the Sagrada Família and Mediterranean coastline."
+        },
+        {
+          id: "bcn_5",
+          name: "El Born Artisan Boutiques & Vintage Shopping",
+          category: "shopping",
+          cost: 0,
+          duration: "2h",
+          slot: "afternoon",
+          description: "Stroll medieval alleyways filled with independent local fashion studios, shoe makers, and artisan craft shops."
+        },
+        {
+          id: "bcn_6",
+          name: "Gothic Quarter Flamenco Performance & Sangria",
+          category: "nightlife",
+          cost: 28,
+          duration: "2h",
+          slot: "evening",
+          description: "Intimate traditional Spanish flamenco show featuring passionate footwork, guitarists, and complimentary sangria."
+        },
+        {
+          id: "bcn_7",
+          name: "Sagrada Família Exterior Architecture Walk",
+          category: "sightseeing",
+          cost: 0,
+          duration: "1.5h",
+          slot: "morning",
+          description: "Admire Gaudi’s towering masterpiece from all angles in Plaça de Gaudí with an insightful self-guided audio tour."
+        },
+        {
+          id: "bcn_8",
+          name: "Ciutadella Park Boat Rowing & Picnic",
+          category: "outdoor",
+          cost: 6,
+          duration: "2h",
+          slot: "afternoon",
+          description: "Rent rowboats on the quiet lake, photograph the Grand Cascada fountain, and relax on shaded green lawns."
+        },
+        {
+          id: "bcn_9",
+          name: "Razzmatazz or Port Olímpic Nightclub",
+          category: "nightlife",
+          cost: 25,
+          duration: "3h",
+          slot: "evening",
+          description: "Experience Barcelona's vibrant nightlife culture with dance floors covering indie, electronic, and pop beats."
+        },
+        {
+          id: "bcn_10",
+          name: "Montjuïc Castle & Cable Car Adventure",
+          category: "outdoor",
+          cost: 15,
+          duration: "2.5h",
+          slot: "morning",
+          description: "Ride the scenic cable car above the harbor and explore the 17th-century clifftop military fortress."
+        }
+      ],
+
+      "Tokyo, Japan": [
+        {
+          id: "tyo_1",
+          name: "Meiji Shrine & Peaceful Forest Walk",
+          category: "sightseeing",
+          cost: 0,
+          duration: "2h",
+          slot: "morning",
+          description: "Pass under colossal wooden Torii gates into serene ancient evergreen forest honoring Emperor Meiji."
+        },
+        {
+          id: "tyo_2",
+          name: "Tsukiji Outer Market Seafood Tasting",
+          category: "food",
+          cost: 20,
+          duration: "2h",
+          slot: "morning",
+          description: "Feast on fresh sushi rolls, tamagoyaki omelets, grilled wagyu skewers, and strawberry matcha daifuku."
+        },
+        {
+          id: "tyo_3",
+          name: "Shibuya Crossing & Hachiko Memorial",
+          category: "sightseeing",
+          cost: 0,
+          duration: "1.5h",
+          slot: "afternoon",
+          description: "Cross the world’s busiest pedestrian intersection and snap group photos at the legendary Hachiko statue."
+        },
+        {
+          id: "tyo_4",
+          name: "Harajuku Takeshita Street & Vintage Thrift",
+          category: "shopping",
+          cost: 0,
+          duration: "2.5h",
+          slot: "afternoon",
+          description: "Browse youth fashion boutiques, quirky souvenir shops, multi-level thrift stores, and giant cotton candy stands."
+        },
+        {
+          id: "tyo_5",
+          name: "Shinjuku Omoide Yokocho & Izakaya Crawl",
+          category: "nightlife",
+          cost: 28,
+          duration: "2.5h",
+          slot: "evening",
+          description: "Squeeze into lantern-lit retro alleyways for savory yakitori skewers, cold local beers, and friendly local banter."
+        },
+        {
+          id: "tyo_6",
+          name: "teamLab Planets Immersive Digital Art",
+          category: "sightseeing",
+          cost: 26,
+          duration: "2.5h",
+          slot: "afternoon",
+          description: "Walk barefoot through glowing crystal water chambers and interact with mirror rooms of floating flowers."
+        },
+        {
+          id: "tyo_7",
+          name: "Shinjuku Gyoen National Garden Walking",
+          category: "outdoor",
+          cost: 4,
+          duration: "2h",
+          slot: "morning",
+          description: "Stroll 144 acres of traditional Japanese landscape ponds, English lawns, and traditional tea houses."
+        },
+        {
+          id: "tyo_8",
+          name: "Akihabara Retro Gaming & Arcade Tour",
+          category: "shopping",
+          cost: 10,
+          duration: "2h",
+          slot: "evening",
+          description: "Challenge friends at multi-story arcade centers featuring Taiko drumming, claw cranes, and retro consoles."
+        },
+        {
+          id: "tyo_9",
+          name: "Odaiba Beachfront & Rainbow Bridge Views",
+          category: "beaches",
+          cost: 0,
+          duration: "2h",
+          slot: "afternoon",
+          description: "Walk the artificial sand beach along Tokyo Bay with futuristic views of the skyline and giant Gundam statue."
+        }
+      ],
+
+      "Mexico City, Mexico": [
+        {
+          id: "mex_1",
+          name: "Historic Zócalo & Templo Mayor Ruins",
+          category: "sightseeing",
+          cost: 5,
+          duration: "2.5h",
+          slot: "morning",
+          description: "Marvel at the giant central plaza, Spanish cathedral, and excavated Aztec archaeological pyramids."
+        },
+        {
+          id: "mex_2",
+          name: "Coyoacán Churro & Street Taco Safari",
+          category: "food",
+          cost: 14,
+          duration: "2h",
+          slot: "afternoon",
+          description: "Taste authentic tacos al pastor sliced fresh from the spit, paired with warm stuffed churros."
+        },
+        {
+          id: "mex_3",
+          name: "Xochimilco Trajinera Boat Fiesta",
+          category: "outdoor",
+          cost: 16,
+          duration: "3h",
+          slot: "afternoon",
+          description: "Ride colorful flat-bottomed canal boats with floating mariachi bands and freshly grilled street food."
+        },
+        {
+          id: "mex_4",
+          name: "Chapultepec Castle & Forest Lake",
+          category: "sightseeing",
+          cost: 6,
+          duration: "2.5h",
+          slot: "morning",
+          description: "Tour the only royal castle in the Americas perched atop a lush hill with panoramic views of Paseo de la Reforma."
+        },
+        {
+          id: "mex_5",
+          name: "Lucha Libre Masked Wrestling Match",
+          category: "nightlife",
+          cost: 18,
+          duration: "2.5h",
+          slot: "evening",
+          description: "High-flying, theatrical acrobatics and roaring crowd energy at the historic Arena México."
+        },
+        {
+          id: "mex_6",
+          name: "La Ciudadela Folk Art & Souvenir Market",
+          category: "shopping",
+          cost: 0,
+          duration: "2h",
+          slot: "afternoon",
+          description: "Hundreds of stalls selling handmade pottery, woven blankets, silver jewelry, and artisan crafts."
+        },
+        {
+          id: "mex_7",
+          name: "Roma & Condesa Hipster Cocktail Terraces",
+          category: "nightlife",
+          cost: 24,
+          duration: "2.5h",
+          slot: "evening",
+          description: "Sip mezcal cocktails and relax on vibrant outdoor terraces surrounded by art deco architecture."
+        }
+      ],
+
+      "New York City, USA": [
+        {
+          id: "nyc_1",
+          name: "Central Park Walk & Bethesda Terrace",
+          category: "outdoor",
+          cost: 0,
+          duration: "2h",
+          slot: "morning",
+          description: "Walk under American elm arches, visit Strawberry Fields, and watch rowboats drift by Bow Bridge."
+        },
+        {
+          id: "nyc_2",
+          name: "High Line & Chelsea Market Food Tour",
+          category: "food",
+          cost: 20,
+          duration: "2.5h",
+          slot: "afternoon",
+          description: "Stroll the elevated industrial rail garden before grabbing tacos, lobster rolls, and artisan bakery treats."
+        },
+        {
+          id: "nyc_3",
+          name: "Brooklyn Bridge Walk & DUMBO Photos",
+          category: "sightseeing",
+          cost: 0,
+          duration: "2h",
+          slot: "morning",
+          description: "Cross the historic suspension bridge for iconic Manhattan skyline panoramas and waterfront photos."
+        },
+        {
+          id: "nyc_4",
+          name: "Greenwich Village Comedy Club & Pizza",
+          category: "nightlife",
+          cost: 25,
+          duration: "2.5h",
+          slot: "evening",
+          description: "Laugh along with hilarious stand-up comedians followed by classic \$3 New York folded pizza slices."
+        },
+        {
+          id: "nyc_5",
+          name: "SoHo Cast-Iron District Thrift & Boutiques",
+          category: "shopping",
+          cost: 0,
+          duration: "2h",
+          slot: "afternoon",
+          description: "Explore world-class fashion outlets, designer pop-ups, and indie art vendors along cobblestone streets."
+        },
+        {
+          id: "nyc_6",
+          name: "Coney Island Boardwalk & Beach Breeze",
+          category: "beaches",
+          cost: 8,
+          duration: "3h",
+          slot: "afternoon",
+          description: "Ride the classic wooden Cyclone roller coaster and take a refreshing walk along the ocean pier."
+        }
+      ],
+
+      "Bali, Indonesia": [
+        {
+          id: "bali_1",
+          name: "Tegalalang Emerald Rice Terraces Trek",
+          category: "outdoor",
+          cost: 8,
+          duration: "2.5h",
+          slot: "morning",
+          description: "Hike through lush terraced hillsides fed by an ancient 9th-century cooperative irrigation system."
+        },
+        {
+          id: "bali_2",
+          name: "Canggu Echo Beach Surf & Sunset Drinks",
+          category: "beaches",
+          cost: 6,
+          duration: "3h",
+          slot: "afternoon",
+          description: "Watch skilled surfers conquer ocean breaks while drinking fresh coconuts on beanbags in the sand."
+        },
+        {
+          id: "bali_3",
+          name: "Traditional Balinese Warung Feast",
+          category: "food",
+          cost: 10,
+          duration: "1.5h",
+          slot: "afternoon",
+          description: "Taste authentic Nasi Campur, spiced chicken satay skewers, sambal matah, and peanut sauces."
+        },
+        {
+          id: "bali_4",
+          name: "Uluwatu Clifftop Temple & Fire Dance",
+          category: "sightseeing",
+          cost: 14,
+          duration: "2.5h",
+          slot: "evening",
+          description: "Perched 230 feet above roaring ocean waves, witness the rhythmic chanting of the sunset Kecak performance."
+        },
+        {
+          id: "bali_5",
+          name: "Seminyak Beach Club Lounge & Beats",
+          category: "nightlife",
+          cost: 22,
+          duration: "3h",
+          slot: "evening",
+          description: "Enjoy chilled tropical vibes, infinity pool lounging, and international DJ sets as stars appear."
+        },
+        {
+          id: "bali_6",
+          name: "Ubud Traditional Art & Handcraft Market",
+          category: "shopping",
+          cost: 0,
+          duration: "2h",
+          slot: "afternoon",
+          description: "Bargain for woven rattan bags, handmade sarongs, wooden carvings, and bohemian home decor."
+        }
+      ]
+    };
+
+    // Generic fallback catalog for any user-entered destination
+    const GENERIC_ACTIVITIES = [
+      { id: "gen_1", name: "Historic City Center Walking Tour", category: "sightseeing", cost: 0, duration: "2h", slot: "morning", description: "Discover the architectural highlights, historic monuments, and public squares of the city." },
+      { id: "gen_2", name: "Central Street Food & Market Tour", category: "food", cost: 18, duration: "2h", slot: "afternoon", description: "Sample famous local street dishes, sweet delicacies, and regional fruits from market stalls." },
+      { id: "gen_3", name: "Waterfront / Beach Boardwalk Stroll", category: "beaches", cost: 0, duration: "2h", slot: "afternoon", description: "Enjoy the refreshing breeze, ocean views, and relaxing coastal atmosphere." },
+      { id: "gen_4", name: "Scenic City Viewpoint at Sunset", category: "outdoor", cost: 0, duration: "2h", slot: "evening", description: "Hike or ride up to the top lookout point for panoramic golden-hour photographs." },
+      { id: "gen_5", name: "Artisan Flea Market & Souvenir Shopping", category: "shopping", cost: 0, duration: "2h", slot: "afternoon", description: "Browse regional handicrafts, vintage clothing, and unique keepsakes." },
+      { id: "gen_6", name: "Historic Pub & Live Music Gathering", category: "nightlife", cost: 22, duration: "2.5h", slot: "evening", description: "Enjoy local craft brews, signature cocktails, and vibrant music in a popular social district." },
+      { id: "gen_7", name: "National Botanical Gardens or City Park", category: "outdoor", cost: 5, duration: "2h", slot: "morning", description: "Peaceful morning nature walk under native trees and blooming gardens." },
+      { id: "gen_8", name: "Renowned Local Museum or Cultural Center", category: "sightseeing", cost: 14, duration: "2.5h", slot: "morning", description: "Explore world-class exhibitions, historical artifacts, and interactive galleries." }
+    ];
+
+    // Activity Categories Meta
+    const CATEGORIES_META = {
+      sightseeing: { label: "Sightseeing", icon: "🏛️" },
+      food: { label: "Food & Dining", icon: "🌮" },
+      beaches: { label: "Beaches & Water", icon: "🏖️" },
+      nightlife: { label: "Nightlife & Social", icon: "🍸" },
+      outdoor: { label: "Outdoor Adventures", icon: "🌲" },
+      shopping: { label: "Shopping & Markets", icon: "🛍️" }
+    };
+
+    // Lodging and Transit Cost lookup constants (estimated per person per day)
+    const TIER_PRICING = {
+      lodging: {
+        hostel: 28,
+        budget_hotel: 50,
+        hotel: 85
+      },
+      food: {
+        budget: 22,
+        balanced: 38,
+        splurge: 65
+      },
+      transitDaily: 10 // baseline daily subway/transit/rideshare estimate per person
+    };
+
+    // --- APPLICATION STATE ---
+    let appState = {
+      currentStep: 1,
+      destination: "Barcelona, Spain",
+      duration: 3,
+      travelersCount: 4,
+      lodgingTier: "budget_hotel",
+      foodTier: "balanced",
+      travelers: [
+        { id: 1, name: "Alex", budget: 750, preferences: ["food", "sightseeing", "beaches"] },
+        { id: 2, name: "Jordan", budget: 1200, preferences: ["food", "nightlife", "shopping"] },
+        { id: 3, name: "Sam", budget: 1000, preferences: ["sightseeing", "outdoor", "beaches"] },
+        { id: 4, name: "Maya", budget: 900, preferences: ["food", "sightseeing", "nightlife"] }
+      ],
+      generatedItinerary: null,
+      lastGeneratedSeed: 1
+    };
+
+    // --- LOCAL STORAGE PERSISTENCE ---
+    const STORAGE_KEY = "TripSplitAI_TripData_v1";
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        showToast("Progress saved to browser storage", "💾");
+      } catch (e) {
+        console.warn("Could not save to localStorage", e);
+      }
+    }
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && Array.isArray(parsed.travelers) && parsed.travelers.length >= 2) {
+            appState = parsed;
+            return true;
+          }
+        }
+      } catch (e) {
+        console.warn("Failed to load state", e);
+      }
+      return false;
+    }
+
+    // --- INITIALIZATION ---
+    window.addEventListener("DOMContentLoaded", () => {
+      const hasSavedData = loadState();
+      populateStep1Inputs();
+      renderTravelerCards();
+      
+      if (hasSavedData && appState.generatedItinerary) {
+        generateItineraryUI();
+        generateBudgetUI();
+      }
+      goToStep(appState.currentStep || 1);
+    });
+
+    function populateStep1Inputs() {
+      const destSelect = document.getElementById("destinationInput");
+      const customInput = document.getElementById("customDestinationInput");
+      
+      if (ACTIVITY_CATALOG[appState.destination]) {
+        destSelect.value = appState.destination;
+        customInput.style.display = "none";
+      } else {
+        destSelect.value = "custom";
+        customInput.style.display = "block";
+        customInput.value = appState.destination;
+      }
+
+      document.getElementById("durationInput").value = appState.duration;
+      document.getElementById("travelerCountInput").value = appState.travelers.length;
+      document.getElementById("lodgingTierInput").value = appState.lodgingTier;
+      document.getElementById("foodTierInput").value = appState.foodTier;
+    }
+
+    function handleDestinationChange(val) {
+      const customInput = document.getElementById("customDestinationInput");
+      if (val === "custom") {
+        customInput.style.display = "block";
+        customInput.focus();
+        appState.destination = customInput.value.trim() || "Custom Destination";
+      } else {
+        customInput.style.display = "none";
+        appState.destination = val;
+      }
+      saveState();
+    }
+
+    // --- STEP NAVIGATION ---
+    function goToStep(stepNumber) {
+      // Validate before advancing past Step 1 or 2
+      if (stepNumber > 1 && !validateStep1()) return;
+      if (stepNumber > 2 && !validateStep2()) return;
+
+      appState.currentStep = stepNumber;
+
+      // Update step indicator classes
+      const items = document.querySelectorAll(".step-item");
+      items.forEach((item, index) => {
+        const step = index + 1;
+        item.classList.remove("active", "completed");
+        if (step === stepNumber) {
+          item.classList.add("active");
+        } else if (step < stepNumber) {
+          item.classList.add("completed");
+        }
+      });
+
+      // Show the selected section
+      document.querySelectorAll(".step-section").forEach((sec, idx) => {
+        sec.classList.remove("active");
+        if (idx + 1 === stepNumber) {
+          sec.classList.add("active");
+        }
+      });
+
+      // Special actions on entering step 3 or 4
+      if (stepNumber === 3) {
+        if (!appState.generatedItinerary) {
+          generateItineraryData();
+        }
+        generateItineraryUI();
+      } else if (stepNumber === 4) {
+        if (!appState.generatedItinerary) {
+          generateItineraryData();
+        }
+        generateBudgetUI();
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      saveState();
+    }
+
+    // --- VALIDATION HELPERS ---
+    function showError(msg) {
+      const banner = document.getElementById("globalErrorBanner");
+      const text = document.getElementById("globalErrorMessage");
+      text.innerText = msg;
+      banner.style.display = "flex";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function hideError() {
+      document.getElementById("globalErrorBanner").style.display = "none";
+    }
+
+    function validateStep1() {
+      hideError();
+      const destSelect = document.getElementById("destinationInput").value;
+      if (destSelect === "custom") {
+        const customVal = document.getElementById("customDestinationInput").value.trim();
+        if (!customVal) {
+          showError("Please enter a name for your custom destination.");
+          return false;
+        }
+        appState.destination = customVal;
+      } else {
+        appState.destination = destSelect;
+      }
+
+      appState.duration = parseInt(document.getElementById("durationInput").value, 10);
+      appState.lodgingTier = document.getElementById("lodgingTierInput").value;
+      appState.foodTier = document.getElementById("foodTierInput").value;
+      return true;
+    }
+
+    function validateStep2() {
+      hideError();
+      syncInputsToState();
+
+      if (appState.travelers.length < 2) {
+        showError("Group travel planning requires at least 2 travelers.");
+        return false;
+      }
+
+      for (let i = 0; i < appState.travelers.length; i++) {
+        const t = appState.travelers[i];
+        if (!t.name || t.name.trim() === "") {
+          showError(`Traveler #${i + 1} needs a name.`);
+          return false;
+        }
+        if (!t.budget || t.budget <= 50) {
+          showError(`${t.name}'s budget must be at least $50 to cover realistic travel estimates.`);
+          return false;
+        }
+        if (!t.preferences || t.preferences.length === 0) {
+          showError(`Please select at least one activity interest for ${t.name}.`);
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // --- TRAVELER CARDS RENDERING (STEP 2) ---
+    function syncTravelerCount(count) {
+      const targetCount = parseInt(count, 10);
+      syncInputsToState();
+
+      while (appState.travelers.length < targetCount) {
+        const newId = appState.travelers.length + 1;
+        appState.travelers.push({
+          id: Date.now() + Math.random(),
+          name: `Traveler ${newId}`,
+          budget: 800,
+          preferences: ["sightseeing", "food"]
+        });
+      }
+
+      while (appState.travelers.length > targetCount) {
+        appState.travelers.pop();
+      }
+
+      renderTravelerCards();
+      saveState();
+    }
+
+    function addNewTraveler() {
+      syncInputsToState();
+      const newNum = appState.travelers.length + 1;
+      appState.travelers.push({
+        id: Date.now() + Math.random(),
+        name: `Traveler ${newNum}`,
+        budget: 850,
+        preferences: ["food", "sightseeing"]
+      });
+      document.getElementById("travelerCountInput").value = Math.min(appState.travelers.length, 6);
+      renderTravelerCards();
+      saveState();
+      showToast(`Added Traveler ${newNum}`, "👤");
+    }
+
+    function removeTraveler(index) {
+      syncInputsToState();
+      if (appState.travelers.length <= 2) {
+        showError("A group trip requires at least 2 travelers.");
+        return;
+      }
+      const removed = appState.travelers.splice(index, 1);
+      document.getElementById("travelerCountInput").value = Math.min(appState.travelers.length, 6);
+      renderTravelerCards();
+      saveState();
+      showToast(`Removed ${removed[0]?.name || "traveler"}`, "🗑️");
+    }
+
+    function syncInputsToState() {
+      const container = document.getElementById("travelersContainer");
+      const cards = container.querySelectorAll(".traveler-card");
+
+      cards.forEach((card, idx) => {
+        if (appState.travelers[idx]) {
+          const nameInput = card.querySelector(".traveler-name-input");
+          const budgetInput = card.querySelector(".traveler-budget-input");
+          const checkedTags = Array.from(card.querySelectorAll(".tag-checkbox:checked")).map(cb => cb.value);
+
+          appState.travelers[idx].name = nameInput.value.trim() || `Traveler ${idx + 1}`;
+          appState.travelers[idx].budget = parseFloat(budgetInput.value) || 0;
+          appState.travelers[idx].preferences = checkedTags;
+        }
+      });
+      checkBudgetDiscrepancy();
+    }
+
+    function checkBudgetDiscrepancy() {
+      if (!appState.travelers.length) return;
+      const budgets = appState.travelers.map(t => t.budget);
+      const min = Math.min(...budgets);
+      const max = Math.max(...budgets);
+      const notice = document.getElementById("budgetDiscrepancyNotice");
+
+      if (max - min > 350) {
+        notice.style.display = "flex";
+      } else {
+        notice.style.display = "none";
+      }
+    }
+
+    function renderTravelerCards() {
+      const container = document.getElementById("travelersContainer");
+      container.innerHTML = "";
+
+      appState.travelers.forEach((traveler, index) => {
+        const card = document.createElement("div");
+        card.className = "traveler-card";
+
+        const categoriesHTML = Object.entries(CATEGORIES_META).map(([key, meta]) => {
+          const isChecked = traveler.preferences.includes(key);
+          const cbId = `tag_${traveler.id || index}_${key}`;
+          return `
+            <label for="${cbId}" style="position: relative;">
+              <input type="checkbox" id="${cbId}" value="${key}" class="tag-checkbox" ${isChecked ? "checked" : ""} onchange="syncInputsToState()">
+              <span class="tag-chip">
+                <span>${meta.icon}</span> ${meta.label}
+              </span>
+            </label>
+          `;
+        }).join("");
+
+        card.innerHTML = `
+          <div class="traveler-header">
+            <div style="display: flex; align-items: center; gap: 0.6rem; flex: 1;">
+              <div class="traveler-avatar">${traveler.name ? traveler.name.charAt(0).toUpperCase() : (index + 1)}</div>
+              <input type="text" class="traveler-name-input" value="${escapeHtml(traveler.name)}" placeholder="Traveler Name" oninput="syncInputsToState()">
+            </div>
+            ${appState.travelers.length > 2 ? `
+              <button type="button" class="btn btn-ghost btn-sm" onclick="removeTraveler(${index})" title="Remove this traveler">✕</button>
+            ` : ""}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Total Trip Budget
+              <span class="form-hint">Total USD ($)</span>
+            </label>
+            <div style="position: relative; display: flex; align-items: center;">
+              <span style="position: absolute; left: 0.75rem; font-weight: 700; color: var(--text-muted);">$</span>
+              <input type="number" min="50" step="25" class="form-control traveler-budget-input" value="${traveler.budget}" style="padding-left: 1.75rem; font-weight: 700;" oninput="syncInputsToState()">
+            </div>
+          </div>
+
+          <div>
+            <div class="tag-selector-title">Preferred Activities</div>
+            <div class="tags-container">
+              ${categoriesHTML}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      checkBudgetDiscrepancy();
+    }
+
+    // --- SMART ITINERARY GENERATION LOGIC ---
+    function validateAndGenerateItinerary() {
+      if (!validateStep2()) return;
+      generateItineraryData();
+      goToStep(3);
+      showToast("Smart Itinerary generated successfully!", "✨");
+    }
+
+    function regenerateItinerary() {
+      appState.lastGeneratedSeed += 1;
+      generateItineraryData();
+      generateItineraryUI();
+      generateBudgetUI();
+      showToast("Itinerary re-shuffled and optimized!", "🎲");
+    }
+
+    /**
+     * CORE ALGORITHM: Fair-Share Multi-Factor Travel Scorer
+     * 1. Considers destination activity pool
+     * 2. Anchors daily spending ceiling to lowest budget
+     * 3. Ranks activities by consensus match count
+     * 4. Ensures minority interest rotation
+     * 5. Enforces time-of-day slots (Morning, Afternoon, Evening)
+     */
+    function generateItineraryData() {
+      syncInputsToState();
+      const destination = appState.destination;
+      const duration = appState.duration;
+      const travelers = appState.travelers;
+
+      // 1. Calculate lowest budget constraint
+      const budgets = travelers.map(t => t.budget);
+      const minBudget = Math.min(...budgets);
+      const avgBudget = Math.round(budgets.reduce((a, b) => a + b, 0) / budgets.length);
+
+      // Baseline daily fixed costs: lodging + food + local transit
+      const lodgingCostPerDay = TIER_PRICING.lodging[appState.lodgingTier] || 50;
+      const foodCostPerDay = TIER_PRICING.food[appState.foodTier] || 38;
+      const transitPerDay = TIER_PRICING.transitDaily;
+      const fixedDailyCost = lodgingCostPerDay + foodCostPerDay + transitPerDay;
+      const totalFixedCommitment = fixedDailyCost * duration;
+
+      // Safe daily activity allowance for the lowest-budget traveler
+      const totalActivityPoolForMin = Math.max(0, minBudget - totalFixedCommitment);
+      const safeDailyActivityCap = Math.max(5, Math.floor(totalActivityPoolForMin / duration));
+
+      // 2. Compute group interest frequencies
+      const interestCounts = {};
+      Object.keys(CATEGORIES_META).forEach(k => interestCounts[k] = 0);
+      travelers.forEach(t => {
+        (t.preferences || []).forEach(pref => {
+          if (interestCounts[pref] !== undefined) interestCounts[pref]++;
+        });
+      });
+
+      // 3. Retrieve Candidate Activities
+      let candidatePool = ACTIVITY_CATALOG[destination];
+      if (!candidatePool || candidatePool.length === 0) {
+        candidatePool = GENERIC_ACTIVITIES;
+      }
+
+      // 4. Generate Day-by-Day Schedule
+      const days = [];
+      const usedActivityIds = new Set();
+      // Track traveler satisfaction count (how many times their preferred tags appear)
+      const travelerSatisfaction = {};
+      travelers.forEach(t => travelerSatisfaction[t.name] = 0);
+
+      for (let dayNum = 1; dayNum <= duration; dayNum++) {
+        const daySlots = {
+          morning: null,
+          afternoon: null,
+          evening: null
+        };
+
+        const slots = ["morning", "afternoon", "evening"];
+
+        slots.forEach(slotTime => {
+          // Find candidates for this slot
+          let candidates = candidatePool.filter(act => {
+            // Match time slot or allow flexible afternoon/morning
+            if (act.slot !== slotTime && !(slotTime === "afternoon" && act.slot === "morning")) {
+              return false;
+            }
+            return true;
+          });
+
+          // Sort candidates using multi-factor scoring
+          candidates.sort((a, b) => {
+            // Penalty if already used earlier in trip
+            const aUsed = usedActivityIds.has(a.id) ? 100 : 0;
+            const bUsed = usedActivityIds.has(b.id) ? 100 : 0;
+
+            // Consensus score: number of people who like this category
+            const aVotes = interestCounts[a.category] || 0;
+            const bVotes = interestCounts[b.category] || 0;
+
+            // Budget penalty: if cost exceeds safe cap
+            const aOver = a.cost > safeDailyActivityCap ? 15 : 0;
+            const bOver = b.cost > safeDailyActivityCap ? 15 : 0;
+
+            // Seed-based perturbation for shuffle variety
+            const aShuffle = ((a.name.length * appState.lastGeneratedSeed * dayNum) % 7);
+            const bShuffle = ((b.name.length * appState.lastGeneratedSeed * dayNum) % 7);
+
+            const scoreA = (aVotes * 10) - aUsed - aOver + aShuffle;
+            const scoreB = (bVotes * 10) - bUsed - bOver + bShuffle;
+
+            return scoreB - scoreA;
+          });
+
+          // Pick top candidate or fallback
+          let chosen = candidates[0];
+          if (!chosen) {
+            // Universal fallback
+            chosen = {
+              id: `fallback_${dayNum}_${slotTime}`,
+              name: slotTime === "evening" ? "Sunset Dinner & City Walk" : "Scenic Neighborhood Exploration",
+              category: slotTime === "evening" ? "food" : "sightseeing",
+              cost: 0,
+              duration: "2h",
+              slot: slotTime,
+              description: "Free self-guided group exploration discovering local street scenes, architecture, and views."
+            };
+          }
+
+          // Register selection
+          usedActivityIds.add(chosen.id);
+
+          // Calculate matching traveler names
+          const matchingTravelers = travelers
+            .filter(t => (t.preferences || []).includes(chosen.category))
+            .map(t => t.name);
+
+          // Update satisfaction
+          matchingTravelers.forEach(name => {
+            travelerSatisfaction[name] = (travelerSatisfaction[name] || 0) + 1;
+          });
+
+          // Build explanation tag
+          let reasonText = "";
+          if (matchingTravelers.length === travelers.length) {
+            reasonText = `⭐ Unanimous pick (${travelers.length}/${travelers.length} friends)`;
+          } else if (matchingTravelers.length > 0) {
+            reasonText = `👥 Liked by ${matchingTravelers.slice(0, 2).join(", ")}${matchingTravelers.length > 2 ? ` +${matchingTravelers.length - 2}` : ""}`;
+          } else {
+            reasonText = `🆓 Budget-friendly neighborhood pick`;
+          }
+
+          daySlots[slotTime] = {
+            ...chosen,
+            matchingTravelers,
+            reasonText,
+            isBudgetStretch: chosen.cost > safeDailyActivityCap
+          };
+        });
+
+        days.push({
+          dayNumber: dayNum,
+          morning: daySlots.morning,
+          afternoon: daySlots.afternoon,
+          evening: daySlots.evening
+        });
+      }
+
+      appState.generatedItinerary = {
+        days,
+        minBudget,
+        avgBudget,
+        safeDailyActivityCap,
+        interestCounts,
+        travelerSatisfaction,
+        totalFixedCommitment
+      };
+
+      saveState();
+    }
+
+    // --- UI RENDERING: GROUP CONSENSUS & ITINERARY (STEP 3) ---
+    function generateItineraryUI() {
+      if (!appState.generatedItinerary) return;
+
+      const data = appState.generatedItinerary;
+      const travelers = appState.travelers;
+
+      // Update subtitle
+      document.getElementById("itinerarySubtitle").innerText = 
+        `${appState.duration} Days in ${appState.destination} for ${travelers.length} Travelers`;
+
+      // 1. Group Consensus Summary Cards
+      const summaryContainer = document.getElementById("consensusSummary");
+      summaryContainer.innerHTML = `
+        <div class="consensus-stat-card">
+          <div class="stat-label">Lowest Stated Budget</div>
+          <div class="stat-value" style="color: var(--primary);">$${data.minBudget}</div>
+          <div class="stat-desc">Serving as the starting equity constraint for group planning.</div>
+        </div>
+        <div class="consensus-stat-card">
+          <div class="stat-label">Group Average Budget</div>
+          <div class="stat-value">$${data.avgBudget}</div>
+          <div class="stat-desc">Spread across lodging, food, local transit, and events.</div>
+        </div>
+        <div class="consensus-stat-card">
+          <div class="stat-label">Max Recommended Daily Activity Spend</div>
+          <div class="stat-value" style="color: ${data.safeDailyActivityCap < 15 ? 'var(--warning)' : 'var(--success)'};">
+            $${data.safeDailyActivityCap} / day
+          </div>
+          <div class="stat-desc">Keeps the lowest-budget traveler fully solvent.</div>
+        </div>
+      `;
+
+      // 2. Interest Distribution Bars
+      const distributionContainer = document.getElementById("interestDistribution");
+      const totalPossibleVotes = travelers.length;
+      
+      const barsHTML = Object.entries(CATEGORIES_META).map(([key, meta]) => {
+        const count = data.interestCounts[key] || 0;
+        const pct = Math.round((count / totalPossibleVotes) * 100);
+        return `
+          <div class="interest-bar-item">
+            <div class="interest-bar-header">
+              <span>${meta.icon} ${meta.label}</span>
+              <span>${count} / ${totalPossibleVotes} friends (${pct}%)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      distributionContainer.innerHTML = `
+        <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+          <h4 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Group Interest Consensus Heatmap
+          </h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem;">
+            ${barsHTML}
+          </div>
+        </div>
+      `;
+
+      // 3. Render Timeline
+      const timelineContainer = document.getElementById("itineraryContainer");
+      timelineContainer.innerHTML = "";
+
+      data.days.forEach(day => {
+        const dayCard = document.createElement("div");
+        dayCard.className = "day-card";
+
+        const totalDayActivityCost = (day.morning.cost + day.afternoon.cost + day.evening.cost);
+
+        dayCard.innerHTML = `
+          <div class="day-header">
+            <div class="day-title">
+              <span>Day ${day.dayNumber}</span>
+              <span class="day-badge">Estimated Activities: $${totalDayActivityCost} / person</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">
+              Balanced morning, afternoon & evening pacing
+            </div>
+          </div>
+          <div class="day-slots">
+            ${renderSlotHTML(day.morning, "Morning Slot", "🌅")}
+            ${renderSlotHTML(day.afternoon, "Afternoon Slot", "☀️")}
+            ${renderSlotHTML(day.evening, "Evening Slot", "🌙")}
+          </div>
+        `;
+        timelineContainer.appendChild(dayCard);
+      });
+    }
+
+    function renderSlotHTML(activity, slotTitle, icon) {
+      const priceBadge = activity.cost === 0 
+        ? `<span class="meta-pill meta-price">Free Activity</span>`
+        : `<span class="meta-pill meta-price">~$${activity.cost} / person</span>`;
+
+      const warningBadge = activity.isBudgetStretch 
+        ? `<span class="meta-pill" style="background: var(--warning-light); color: #92400e;">⚠️ Budget stretch</span>` 
+        : "";
+
+      return `
+        <div class="slot-card">
+          <div>
+            <div class="slot-time">
+              <span>${icon}</span> ${slotTitle} • ${activity.duration}
+            </div>
+            <h4 class="slot-title">${escapeHtml(activity.name)}</h4>
+            <p class="slot-description">${escapeHtml(activity.description)}</p>
+          </div>
+          <div>
+            <div class="slot-meta" style="margin-bottom: 0.4rem;">
+              ${priceBadge}
+              <span class="meta-pill">${CATEGORIES_META[activity.category]?.icon || "📌"} ${CATEGORIES_META[activity.category]?.label || activity.category}</span>
+              ${warningBadge}
+            </div>
+            <div class="meta-pill meta-reason" style="width: 100%; justify-content: flex-start;">
+              ${escapeHtml(activity.reasonText)}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- UI RENDERING: BUDGET CALCULATOR & EXPENSE SPLIT (STEP 4) ---
+    function generateBudgetUI() {
+      if (!appState.generatedItinerary) return;
+
+      const duration = appState.duration;
+      const travelers = appState.travelers;
+      const lodgingPerPersonDay = TIER_PRICING.lodging[appState.lodgingTier] || 50;
+      const foodPerPersonDay = TIER_PRICING.food[appState.foodTier] || 38;
+      const transitPerPersonDay = TIER_PRICING.transitDaily;
+
+      // Sum exact itinerary activity tickets
+      let totalItineraryActivityCost = 0;
+      appState.generatedItinerary.days.forEach(day => {
+        totalItineraryActivityCost += (day.morning.cost + day.afternoon.cost + day.evening.cost);
+      });
+
+      const totalLodgingPerPerson = lodgingPerPersonDay * duration;
+      const totalFoodPerPerson = foodPerPersonDay * duration;
+      const totalTransitPerPerson = transitPerPersonDay * duration;
+      const totalCostPerPerson = totalLodgingPerPerson + totalFoodPerPerson + totalTransitPerPerson + totalItineraryActivityCost;
+      const totalGroupTripCost = totalCostPerPerson * travelers.length;
+
+      // Render Group Totals Banner
+      const groupSummary = document.getElementById("groupBudgetSummary");
+      groupSummary.innerHTML = `
+        <div class="consensus-stat-card">
+          <div class="stat-label">Projected Total Trip Cost</div>
+          <div class="stat-value" style="color: var(--primary);">$${totalGroupTripCost.toLocaleString()}</div>
+          <div class="stat-desc">Combined cost for all ${travelers.length} travelers across ${duration} days.</div>
+        </div>
+        <div class="consensus-stat-card">
+          <div class="stat-label">Estimated Cost Per Person</div>
+          <div class="stat-value">$${totalCostPerPerson.toLocaleString()}</div>
+          <div class="stat-desc">Includes shared lodging, meals, transit & all itinerary activities.</div>
+        </div>
+        <div class="consensus-stat-card">
+          <div class="stat-label">Cost Breakdown / Person</div>
+          <div class="stat-desc" style="font-size: 0.85rem; line-height: 1.5; margin-top: 0.4rem;">
+            🏠 Lodging: <strong>$${totalLodgingPerPerson}</strong> | 🍽️ Food: <strong>$${totalFoodPerPerson}</strong><br>
+            🚇 Transit: <strong>$${totalTransitPerPerson}</strong> | 🎟️ Activities: <strong>$${totalItineraryActivityCost}</strong>
+          </div>
+        </div>
+      `;
+
+      // Render Individual Balances
+      const individualContainer = document.getElementById("individualBudgetContainer");
+      individualContainer.innerHTML = "";
+
+      let deficitFound = false;
+
+      travelers.forEach(traveler => {
+        const netBalance = traveler.budget - totalCostPerPerson;
+        const isDeficit = netBalance < 0;
+        if (isDeficit) deficitFound = true;
+
+        const percentUsed = Math.min(200, Math.round((totalCostPerPerson / traveler.budget) * 100));
+
+        const card = document.createElement("div");
+        card.className = `person-budget-card ${isDeficit ? "deficit" : "surplus"}`;
+
+        card.innerHTML = `
+          <div class="person-header">
+            <div class="person-name">${escapeHtml(traveler.name)}</div>
+            <div class="balance-badge ${isDeficit ? "alert" : "ok"}">
+              ${isDeficit ? `Deficit: -$${Math.abs(netBalance)}` : `Remaining: +$${netBalance}`}
+            </div>
+          </div>
+
+          <!-- Progress bar -->
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.775rem; font-weight: 600; margin-bottom: 0.35rem;">
+              <span>Stated Budget: $${traveler.budget}</span>
+              <span style="color: ${isDeficit ? 'var(--danger)' : 'var(--text-muted)'};">${percentUsed}% Used</span>
+            </div>
+            <div class="budget-meter-track">
+              <div class="budget-meter-fill ${isDeficit ? 'meter-danger' : 'meter-ok'}" style="width: ${Math.min(100, percentUsed)}%;"></div>
+            </div>
+          </div>
+
+          <table class="cost-breakdown-table">
+            <tr>
+              <td>Shared Lodging (${duration} nights @ $${lodgingPerPersonDay}/n)</td>
+              <td>$${totalLodgingPerPerson}</td>
+            </tr>
+            <tr>
+              <td>Food & Dining Allowance (${duration} days)</td>
+              <td>$${totalFoodPerPerson}</td>
+            </tr>
+            <tr>
+              <td>Local Transit Pass & Rideshares</td>
+              <td>$${totalTransitPerPerson}</td>
+            </tr>
+            <tr>
+              <td>Itinerary Activity Entrance Fees</td>
+              <td>$${totalItineraryActivityCost}</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total Estimated Cost</td>
+              <td>$${totalCostPerPerson}</td>
+            </tr>
+          </table>
+
+          ${isDeficit ? `
+            <div class="alert alert-danger" style="margin-bottom: 0; padding: 0.65rem 0.85rem; font-size: 0.8rem;">
+              <span>⚠️</span>
+              <div>
+                <strong>Over-Budget Warning:</strong> Estimated expenses exceed ${escapeHtml(traveler.name)}'s budget by <strong>$${Math.abs(netBalance)}</strong>. Consider switching lodging style to Shared Hostel or swapping paid activities for free tours.
+              </div>
+            </div>
+          ` : `
+            <div class="alert alert-success" style="margin-bottom: 0; padding: 0.65rem 0.85rem; font-size: 0.8rem;">
+              <span>✅</span>
+              <div>
+                <strong>Budget Feasible:</strong> ${escapeHtml(traveler.name)} has <strong>$${netBalance}</strong> left over for souvenirs, snacks, or spontaneous splurges.
+              </div>
+            </div>
+          `}
+        `;
+        individualContainer.appendChild(card);
+      });
+    }
+
+    // --- PRESET LOADER (FOR EASY DEMOING / TESTING) ---
+    function openDemoModal() {
+      document.getElementById("demoModal").classList.add("active");
+    }
+
+    function closeDemoModal() {
+      document.getElementById("demoModal").classList.remove("active");
+    }
+
+    function loadPreset(key) {
+      if (key === "barcelona") {
+        appState.destination = "Barcelona, Spain";
+        appState.duration = 3;
+        appState.lodgingTier = "budget_hotel";
+        appState.foodTier = "balanced";
+        appState.travelers = [
+          { id: 101, name: "Alex", budget: 750, preferences: ["food", "sightseeing", "beaches"] },
+          { id: 102, name: "Jordan", budget: 1200, preferences: ["food", "nightlife", "shopping"] },
+          { id: 103, name: "Sam", budget: 1000, preferences: ["sightseeing", "outdoor", "beaches"] },
+          { id: 104, name: "Maya", budget: 900, preferences: ["food", "sightseeing", "nightlife"] }
+        ];
+      } else if (key === "tokyo") {
+        appState.destination = "Tokyo, Japan";
+        appState.duration = 5;
+        appState.lodgingTier = "budget_hotel";
+        appState.foodTier = "balanced";
+        appState.travelers = [
+          { id: 201, name: "Ken", budget: 1400, preferences: ["sightseeing", "food", "nightlife"] },
+          { id: 202, name: "Elena", budget: 950, preferences: ["food", "shopping", "sightseeing"] },
+          { id: 203, name: "Ren", budget: 1100, preferences: ["outdoor", "sightseeing", "shopping"] }
+        ];
+      } else if (key === "mexico") {
+        appState.destination = "Mexico City, Mexico";
+        appState.duration = 3;
+        appState.lodgingTier = "hostel";
+        appState.foodTier = "budget";
+        appState.travelers = [
+          { id: 301, name: "Carlos", budget: 450, preferences: ["food", "outdoor", "sightseeing"] },
+          { id: 302, name: "Sofia", budget: 600, preferences: ["sightseeing", "shopping", "food"] },
+          { id: 303, name: "Mateo", budget: 500, preferences: ["nightlife", "food", "outdoor"] },
+          { id: 304, name: "Valentina", budget: 550, preferences: ["shopping", "sightseeing", "nightlife"] }
+        ];
+      }
+
+      appState.generatedItinerary = null;
+      populateStep1Inputs();
+      renderTravelerCards();
+      generateItineraryData();
+      generateItineraryUI();
+      generateBudgetUI();
+      closeDemoModal();
+      goToStep(3);
+      showToast(`Loaded ${appState.destination} Demo Scenario`, "✨");
+    }
+
+    function confirmResetTrip() {
+      if (confirm("Reset trip and start fresh with default parameters?")) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    }
+
+    // --- UTILITIES ---
+    function escapeHtml(str) {
+      if (!str) return "";
+      return str.replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag] || tag));
+    }
+
+    function showToast(message, icon = "ℹ️") {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.innerHTML = `<span>${icon}</span> <span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(10px)";
+        setTimeout(() => toast.remove(), 300);
+      }, 2600);
+    }
+  </script>
+</body>
+</html>
